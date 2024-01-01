@@ -1,0 +1,3 @@
+[submodule "ft_lst"]
+	path = ft_lst
+	url = git@github.com:TulipeSoyeuse/ft_lst.git

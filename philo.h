@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:43:09 by romain            #+#    #+#             */
-/*   Updated: 2024/01/03 15:44:51 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/03 18:25:49 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,5 @@ typedef struct s_philosopher
 
 int					ft_atoi(const char *str);
 void				*routine_main(void *self);
+int					take_fork(t_philosopher *self);
 #endif

@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:41:13 by romain            #+#    #+#             */
-/*   Updated: 2024/01/03 17:57:23 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/03 18:30:12 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,13 @@ void	ph_eat(t_lst *table, struct timeval time)
 
 	self = table->data;
 	right = table->next->data;
-	if (self->left_fork == unavailable)
+	if (take_fork(self))
 		return ;
-	pthread_mutex_lock(&(self->left_fork_mutex));
-	self->left_fork = unavailable;
-	gettimeofday(&time, NULL);
-	printf("%d %zu as taken a fork\n", time.tv_usec, self->rank);
-	if (right->left_fork == unavailable)
+	if (take_fork(right))
 	{
 		pthread_mutex_unlock(&(self->left_fork_mutex));
 		return ;
 	}
-	pthread_mutex_lock(&(right->left_fork_mutex));
-	gettimeofday(&time, NULL);
-	printf("%d %zu as taken a fork\n", time.tv_usec, self->rank);
-	right->left_fork = unavailable;
 	printf("%d %zu is eating\n", time.tv_usec, self->rank);
 	gettimeofday(&time, NULL);
 	self->status = is_eating;

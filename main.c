@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/01/02 23:32:09 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/03 17:55:58 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@
 /// to finish before returning ), routine himself is defined in routine.c.
 /// @param table table where all philosophers are installed
 /// @param params rules defining the simulation
-void	start_sim(t_lst **table, t_params params)
+void	start_sim(t_lst **table)
 {
 	t_lst	*cursor;
 
-	(void) params;
 	cursor = *table;
 	while (cursor->next != *table)
 	{
@@ -34,24 +33,28 @@ void	start_sim(t_lst **table, t_params params)
 	while (cursor->next != *table)
 	{
 		pthread_join(((t_philosopher *)(cursor->data))->thread, NULL);
-		printf("thread %d exiting\n", ((t_philosopher *) cursor->data)->rank);
+		printf("thread %zu exiting\n", ((t_philosopher *)cursor->data)->rank);
 		cursor = cursor->next;
 	}
 	pthread_join(((t_philosopher *)(cursor->data))->thread, NULL);
+	printf("thread %zu exiting\n", ((t_philosopher *)cursor->data)->rank);
 }
 
-void	init_table(t_lst **table, t_params params)
+void	init_table(t_lst **table, t_params *params)
 {
-	size_t				i;
+	size_t			i;
 	t_philosopher	*philosopher;
 	t_lst			*new;
 
 	i = 0;
-	while (i++ != params.number_of_philosophers)
+	while (i++ != params->number_of_philosophers)
 	{
 		philosopher = malloc(sizeof(t_philosopher));
 		philosopher->eat_count = 0;
 		philosopher->rank = i;
+		philosopher->status = is_thinking;
+		philosopher->left_fork = available;
+		philosopher->params = params;
 		new = lst_new(philosopher);
 		pthread_mutex_init(&(philosopher->left_fork_mutex), NULL);
 		append(table, new);
@@ -70,11 +73,11 @@ int	main(int ac, char **av)
 	params.time_to_eat = ft_atoi(av[3]);
 	params.time_to_sleep = ft_atoi(av[4]);
 	if (ac == 6)
-		params.number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
+		params.nb_of_times_must_eat = ft_atoi(av[5]);
 	else
-		params.number_of_times_each_philosopher_must_eat = 0;
+		params.nb_of_times_must_eat = 0;
 	table = NULL;
-	init_table(&table, params);
-	start_sim(&table, params);
+	init_table(&table, &params);
+	start_sim(&table);
 	pthread_exit(NULL);
 }

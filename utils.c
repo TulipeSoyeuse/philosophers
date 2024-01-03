@@ -6,14 +6,22 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:17:08 by romain            #+#    #+#             */
-/*   Updated: 2024/01/02 21:17:35 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/02 23:24:55 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+static int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
+}
+
 static int	ft_isspace(const char c)
 {
-	if (c == ' ' || c == '\t' || c == '\v'
-		|| c == '\n' || c == '\r' || c == '\f')
+	if (c == ' ' || c == '\t' || c == '\v' || c == '\n' || c == '\r'
+		|| c == '\f')
 		return (1);
 	else
 		return (0);

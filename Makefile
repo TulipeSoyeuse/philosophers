@@ -6,7 +6,7 @@
 #    By: romain <romain@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 18:18:10 by romain            #+#    #+#              #
-#    Updated: 2024/01/02 21:16:26 by romain           ###   ########.fr        #
+#    Updated: 2024/01/02 23:25:40 by romain           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ OBJS= $(SRCS:.c=.o)
 # Compiler, Linker Defines
 CC		= cc
 CFLAGS 	= -Wall -Wextra -Werror
-NAME	= liblst.a
+NAME	= philo
 LIBLST	= ft_lst/liblst.a
 
 # Link all Object Files with external Libraries into Binaries

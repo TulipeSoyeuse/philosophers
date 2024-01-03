@@ -6,13 +6,18 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:41:13 by romain            #+#    #+#             */
-/*   Updated: 2024/01/02 22:52:22 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/02 23:34:00 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int routine_main(void *self)
+void	*routine_main(void *arg)
 {
-	
+	t_philosopher	*self;
+	t_lst			*table;
+
+	table = arg;
+	self = table->data;
+	return (NULL);
 }

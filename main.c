@@ -6,11 +6,12 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/01/02 22:50:21 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/02 23:32:09 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
 /// @brief start and join all routines ( this function wait for all the thread
 /// to finish before returning ), routine himself is defined in routine.c.
 /// @param table table where all philosophers are installed
@@ -19,28 +20,29 @@ void	start_sim(t_lst **table, t_params params)
 {
 	t_lst	*cursor;
 
-	cursor = (*table);
-	while (cursor->next != table)
+	(void) params;
+	cursor = *table;
+	while (cursor->next != *table)
 	{
-		pthread_create(((t_philosopher *)(cursor->data))->thread, NULL,
+		pthread_create(&((t_philosopher *)(cursor->data))->thread, NULL,
 			&routine_main, cursor);
 		cursor = cursor->next;
 	}
-	pthread_create(((t_philosopher *)(cursor->data))->thread, NULL,
+	pthread_create(&((t_philosopher *)(cursor->data))->thread, NULL,
 		&routine_main, cursor);
 	cursor = (*table);
-	while (cursor->next != table)
+	while (cursor->next != *table)
 	{
 		pthread_join(((t_philosopher *)(cursor->data))->thread, NULL);
+		printf("thread %d exiting\n", ((t_philosopher *) cursor->data)->rank);
 		cursor = cursor->next;
 	}
 	pthread_join(((t_philosopher *)(cursor->data))->thread, NULL);
-
 }
 
 void	init_table(t_lst **table, t_params params)
 {
-	int				i;
+	size_t				i;
 	t_philosopher	*philosopher;
 	t_lst			*new;
 

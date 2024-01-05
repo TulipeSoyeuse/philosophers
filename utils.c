@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:17:08 by romain            #+#    #+#             */
-/*   Updated: 2024/01/03 18:30:09 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/05 18:18:33 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,12 @@ int	ft_atoi(const char *str)
 	return (res * signe);
 }
 
-int	take_fork(t_philosopher *self)
+int	take_fork(t_philosopher *self, size_t id)
 {
-	struct timeval	time;
-
 	if (self->left_fork == unavailable)
 		return (1);
 	pthread_mutex_lock(&(self->left_fork_mutex));
 	self->left_fork = unavailable;
-	gettimeofday(&time, NULL);
-	printf("%d %zu as taken a fork\n", time.tv_usec, self->rank);
+	printf("%lld %zu as taken a fork\n", timestamp(), id);
 	return (0);
 }

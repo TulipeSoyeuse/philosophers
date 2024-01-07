@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:43:09 by romain            #+#    #+#             */
-/*   Updated: 2024/01/05 18:18:40 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/06 01:21:50 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_params
 	unsigned long	time_to_sleep;
 	unsigned long	nb_of_times_must_eat;
 }					t_params;
+
 typedef struct s_philosopher
 {
 	size_t			rank;

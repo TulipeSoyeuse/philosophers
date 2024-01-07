@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:41:13 by romain            #+#    #+#             */
-/*   Updated: 2024/01/05 18:43:12 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/06 01:14:20 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,13 @@ int	is_sim_must_end(t_lst *table)
 	return (0);
 }
 
-void	ph_dead(t_philosopher *self)
+void	ph_dead(t_lst *table)
 {
+	t_philosopher	*self;
+
+	self = table->data;
+	if (is_sim_must_end(table))
+		return ;
 	self->status = is_dead;
 	printf("%lld %zu died\n", timestamp(), self->rank);
 }
@@ -49,7 +54,8 @@ void	ph_sleep(t_lst *table)
 
 	self = table->data;
 	self->status = is_sleeping;
-	printf("%lld %zu is sleeping\n", timestamp(), self->rank);
+	if (!is_sim_must_end(table))
+		printf("%lld %zu is sleeping\n", timestamp(), self->rank);
 	usleep(self->params->time_to_sleep);
 	self->status = is_thinking;
 }
@@ -68,7 +74,8 @@ void	ph_eat(t_lst *table)
 		pthread_mutex_unlock(&(self->left_fork_mutex));
 		return ;
 	}
-	printf("%lld %zu is eating\n", timestamp(), self->rank);
+	if (!is_sim_must_end(table))
+		printf("%lld %zu is eating\n", timestamp(), self->rank);
 	self->status = is_eating;
 	self->last_meal = timestamp();
 	usleep(self->params->time_to_eat);
@@ -87,12 +94,14 @@ void	*routine_main(void *arg)
 
 	table = arg;
 	self = table->data;
-	self->last_meal = timestamp();
+	while (!self->last_meal)
+		;
 	while (!is_sim_must_end(table))
 	{
-		if (timestamp() - self->last_meal > (long long) self->params->time_to_die)
+		if (timestamp()
+			- self->last_meal > (long long)self->params->time_to_die)
 		{
-			ph_dead(self);
+			ph_dead(table);
 			break ;
 		}
 		if (self->status == is_thinking)

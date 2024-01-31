@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:43:09 by romain            #+#    #+#             */
-/*   Updated: 2024/01/06 01:21:50 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/31 18:00:19 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@
 typedef enum e_status
 {
 	is_dead,
-	is_thinking,
-	is_eating,
-	is_sleeping
+	is_alive,
 }					t_status;
 typedef enum e_left_fork
 {
@@ -38,6 +36,7 @@ typedef struct s_params
 	unsigned long	time_to_eat;
 	unsigned long	time_to_sleep;
 	unsigned long	nb_of_times_must_eat;
+	int				sim_must_end;
 }					t_params;
 
 typedef struct s_philosopher
@@ -56,4 +55,6 @@ int					ft_atoi(const char *str);
 void				*routine_main(void *self);
 int					take_fork(t_philosopher *self, size_t id);
 long long			timestamp(void);
+void				ph_dead(t_philosopher *self);
+void				*routine_death(void *arg);
 #endif

@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/01/06 01:10:18 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/31 18:28:25 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	launch(t_lst **table)
 void	start_sim(t_lst **table)
 {
 	t_lst	*cursor;
+	pthread_t death;
 
 	printf("sim starting at %lld\n", timestamp());
 	cursor = *table;
@@ -48,8 +49,10 @@ void	start_sim(t_lst **table)
 	}
 	pthread_create(&((t_philosopher *)(cursor->data))->thread, NULL,
 		&routine_main, cursor);
+	pthread_create(&death, NULL, &routine_death, *table);
 	launch(table);
 	cursor = (*table);
+	pthread_join(death, NULL);
 	while (cursor->next != *table)
 	{
 		pthread_join(((t_philosopher *)(cursor->data))->thread, NULL);
@@ -72,9 +75,9 @@ int	init_table(t_lst **table, t_params *params)
 			return (1);
 		philosopher->eat_count = 0;
 		philosopher->rank = i;
-		philosopher->status = is_thinking;
 		philosopher->left_fork = available;
 		philosopher->params = params;
+		philosopher->last_meal = 0;
 		new = lst_new(philosopher);
 		if (!new)
 			return (1);
@@ -103,6 +106,7 @@ int	main(int ac, char **av)
 	params.time_to_die = ft_atoi(av[2]);
 	params.time_to_eat = ft_atoi(av[3]) * 1000;
 	params.time_to_sleep = ft_atoi(av[4]) * 1000;
+	params.sim_must_end = 0;
 	if (ac == 6)
 		params.nb_of_times_must_eat = ft_atoi(av[5]);
 	else

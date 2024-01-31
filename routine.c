@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:41:13 by romain            #+#    #+#             */
-/*   Updated: 2024/01/31 18:57:07 by romain           ###   ########.fr       */
+/*   Updated: 2024/01/31 18:59:14 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,10 @@ void	ph_eat(t_lst *table)
 
 	self = table->data;
 	right = table->next->data;
-	if (take_fork(self, self->rank))
-		return ;
-	if (take_fork(right, self->rank))
+	if (self->left_fork && right->left_fork)
 	{
-		pthread_mutex_unlock(&(self->left_fork_mutex));
-		return ;
+		pthread_mutex_lock(&self->left_fork_mutex);
+		pthread_mutex_lock(&right->left_fork_mutex);
 	}
 	printf("%lld %zu is eating\n", timestamp(), self->rank);
 	self->last_meal = timestamp();

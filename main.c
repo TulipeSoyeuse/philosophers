@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/01/31 18:28:25 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:32:13 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	launch(t_lst **table)
 
 	len = get_lst_len(table);
 	cursor = *table;
-	time = timestamp();
+	time = timestamp(0);
 	while (len--)
 	{
 		philo = cursor->data;
@@ -36,11 +36,12 @@ void	launch(t_lst **table)
 /// @param params rules defining the simulation
 void	start_sim(t_lst **table)
 {
-	t_lst	*cursor;
-	pthread_t death;
+	t_lst		*cursor;
+	pthread_t	death;
 
-	printf("sim starting at %lld\n", timestamp());
+	printf("sim starting at %lld\n", timestamp(0));
 	cursor = *table;
+	((t_philosopher *)(cursor->data))->params->start_time = timestamp(0);
 	while (cursor->next != *table)
 	{
 		pthread_create(&((t_philosopher *)(cursor->data))->thread, NULL,
@@ -107,6 +108,7 @@ int	main(int ac, char **av)
 	params.time_to_eat = ft_atoi(av[3]) * 1000;
 	params.time_to_sleep = ft_atoi(av[4]) * 1000;
 	params.sim_must_end = 0;
+	params.start_time = 0;
 	if (ac == 6)
 		params.nb_of_times_must_eat = ft_atoi(av[5]);
 	else

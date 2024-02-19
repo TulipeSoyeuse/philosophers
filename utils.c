@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:17:08 by romain            #+#    #+#             */
-/*   Updated: 2024/01/06 01:27:37 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:29:12 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	take_fork(t_philosopher *self, size_t id)
 		return (1);
 	pthread_mutex_lock(&(self->left_fork_mutex));
 	self->left_fork = unavailable;
-	printf("%lld %zu as taken a fork from %zu\n", timestamp(), id, self->rank);
+	printf("%lld %zu as taken a fork from %zu\n",
+		timestamp(self->params->start_time), id, self->rank);
 	return (0);
 }

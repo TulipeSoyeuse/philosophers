@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:41:13 by romain            #+#    #+#             */
-/*   Updated: 2024/01/31 18:59:14 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:39:56 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_sim_must_end(t_lst *table)
 	t_philosopher	*philo;
 	int				len;
 
-	len = ((t_philosopher *) table->data)->params->number_of_philosophers;
+	len = ((t_philosopher *)table->data)->params->number_of_philosophers;
 	while (len--)
 	{
 		philo = table->data;
@@ -31,7 +31,7 @@ int	is_sim_must_end(t_lst *table)
 void	ph_dead(t_philosopher *self)
 {
 	self->status = is_dead;
-	printf("%lld %zu died\n", timestamp(), self->rank);
+	printf("%lld %zu died\n", timestamp(self->params->start_time), self->rank);
 }
 
 void	ph_sleep(t_lst *table)
@@ -41,8 +41,11 @@ void	ph_sleep(t_lst *table)
 	if (is_sim_must_end(table))
 		return ;
 	self = table->data;
-	printf("%lld %zu is sleeping\n", timestamp(), self->rank);
+	printf("%lld %zu is sleeping\n", timestamp(self->params->start_time),
+		self->rank);
 	usleep(self->params->time_to_sleep);
+	printf("%lld %zu is thinking\n", timestamp(self->params->start_time),
+		self->rank);
 }
 
 void	ph_eat(t_lst *table)
@@ -52,16 +55,14 @@ void	ph_eat(t_lst *table)
 
 	self = table->data;
 	right = table->next->data;
-	if (self->left_fork && right->left_fork)
-	{
-		pthread_mutex_lock(&self->left_fork_mutex);
-		pthread_mutex_lock(&right->left_fork_mutex);
-	}
-	printf("%lld %zu is eating\n", timestamp(), self->rank);
-	self->last_meal = timestamp();
+	if (self == right)
+		return ;
+	pthread_mutex_lock(&self->left_fork_mutex);
+	pthread_mutex_lock(&right->left_fork_mutex);
+	printf("%lld %zu is eating\n", timestamp(self->params->start_time),
+		self->rank);
+	self->last_meal = timestamp(0);
 	usleep(self->params->time_to_eat);
-	self->left_fork = available;
-	right->left_fork = available;
 	pthread_mutex_unlock(&(self->left_fork_mutex));
 	pthread_mutex_unlock(&(right->left_fork_mutex));
 	self->eat_count++;

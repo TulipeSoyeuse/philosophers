@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:31:36 by romain            #+#    #+#             */
-/*   Updated: 2024/01/31 18:33:03 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:36:00 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	sim_done(t_philosopher *philo)
 		printf("number of eating reach by %zu", philo->rank);
 		return (1);
 	}
-	if (!((long long)philo->params->time_to_die + philo->last_meal - timestamp())
-		&& philo->last_meal)
+	if (!((long long)philo->params->time_to_die + philo->last_meal
+			- timestamp(0)) && philo->last_meal)
 	{
 		ph_dead(philo);
 		return (1);
@@ -48,11 +48,8 @@ int	update_sim_status(t_lst *table)
 	return (0);
 }
 
-void	*routine_death(void *arg)
+void	*routine_death(t_lst *table)
 {
-	t_lst	*table;
-
-	table = arg;
 	while (1)
 		if (update_sim_status(table))
 		{

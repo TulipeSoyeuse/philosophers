@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:31:36 by romain            #+#    #+#             */
-/*   Updated: 2024/02/19 11:36:00 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/19 12:39:53 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	sim_done(t_philosopher *philo)
 	if (philo->params->nb_of_times_must_eat
 		&& philo->params->nb_of_times_must_eat <= (unsigned long)philo->eat_count)
 	{
-		printf("number of eating reach by %zu", philo->rank);
+		printf("number of eating reach by %zu\n", philo->rank);
 		return (1);
 	}
 	if (!((long long)philo->params->time_to_die + philo->last_meal
@@ -50,10 +50,13 @@ int	update_sim_status(t_lst *table)
 
 void	*routine_death(t_lst *table)
 {
+	t_philosopher	*philo;
+
 	while (1)
 		if (update_sim_status(table))
 		{
-			((t_philosopher *)table->data)->params->sim_must_end = 1;
+			philo = table->data;
+			philo->params->sim_must_end = 1;
 			return (NULL);
 		}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/02/19 11:32:13 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/22 12:30:14 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	init_table(t_lst **table, t_params *params)
 			return (1);
 		philosopher->eat_count = 0;
 		philosopher->rank = i;
-		philosopher->left_fork = available;
 		philosopher->params = params;
 		philosopher->last_meal = 0;
 		new = lst_new(philosopher);

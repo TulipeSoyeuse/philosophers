@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:31:36 by romain            #+#    #+#             */
-/*   Updated: 2024/02/26 11:13:25 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/26 13:22:40 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ void	routine_death(t_lst *table)
 		if (status)
 		{
 			philo = table->data;
+			pthread_mutex_lock(&(philo->params->sim_must_end_mutex));
 			philo->params->sim_must_end = 1;
+			pthread_mutex_unlock(&(philo->params->sim_must_end_mutex));
 			return ;
 		}
 	}

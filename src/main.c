@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/02/26 11:17:41 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/26 12:18:29 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	init_table(t_lst **table, t_params *params)
 		pthread_mutex_init(&(philosopher->left_fork_mutex), NULL);
 		append(table, new);
 	}
+	pthread_mutex_init(&(params->sim_must_end_mutex), NULL);
 	return (0);
 }
 
@@ -112,8 +113,8 @@ int	main(int ac, char **av)
 	else
 		params.nb_of_times_must_eat = 0;
 	table = NULL;
-	if (init_table(&table, &params))
-		return (1);
-	start_sim(&table);
+	if (!init_table(&table, &params))
+		start_sim(&table);
 	free_lst(table, &ph_cleanup);
+	pthread_mutex_destroy(&(params.sim_must_end_mutex));
 }

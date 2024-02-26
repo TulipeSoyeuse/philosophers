@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:43:09 by romain            #+#    #+#             */
-/*   Updated: 2024/02/26 11:15:22 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/26 12:11:29 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_params
 	unsigned long	time_to_sleep;
 	unsigned long	nb_of_times_must_eat;
 	int				sim_must_end;
+	pthread_mutex_t	sim_must_end_mutex;
 	long long		start_time;
 }					t_params;
 

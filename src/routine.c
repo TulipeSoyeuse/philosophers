@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:41:13 by romain            #+#    #+#             */
-/*   Updated: 2024/02/19 11:39:56 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/26 12:24:31 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 int	is_sim_must_end(t_lst *table)
 {
 	t_philosopher	*philo;
-	int				len;
+	t_params		*params;
+	int				code;
 
-	len = ((t_philosopher *)table->data)->params->number_of_philosophers;
-	while (len--)
-	{
-		philo = table->data;
-		if (philo->params->sim_must_end)
-			return (1);
-		table = table->next;
-	}
-	return (0);
+	philo = table->data;
+	params = philo->params;
+	pthread_mutex_lock(&(params->sim_must_end_mutex));
+	code = params->sim_must_end;
+	pthread_mutex_unlock(&(params->sim_must_end_mutex));
+	return (code);
 }
 
 void	ph_dead(t_philosopher *self)
@@ -38,14 +36,15 @@ void	ph_sleep(t_lst *table)
 {
 	t_philosopher	*self;
 
-	if (is_sim_must_end(table))
-		return ;
 	self = table->data;
-	printf("%lld %zu is sleeping\n", timestamp(self->params->start_time),
-		self->rank);
-	usleep(self->params->time_to_sleep);
-	printf("%lld %zu is thinking\n", timestamp(self->params->start_time),
-		self->rank);
+	if (!is_sim_must_end(table))
+		printf("%lld %zu is sleeping\n", timestamp(self->params->start_time),
+			self->rank);
+	if (!is_sim_must_end(table))
+		usleep(self->params->time_to_sleep);
+	if (!is_sim_must_end(table))
+		printf("%lld %zu is thinking\n", timestamp(self->params->start_time),
+			self->rank);
 }
 
 void	ph_eat(t_lst *table)
@@ -59,8 +58,9 @@ void	ph_eat(t_lst *table)
 		return ;
 	pthread_mutex_lock(&self->left_fork_mutex);
 	pthread_mutex_lock(&right->left_fork_mutex);
-	printf("%lld %zu is eating\n", timestamp(self->params->start_time),
-		self->rank);
+	if (!is_sim_must_end(table))
+		printf("%lld %zu is eating\n", timestamp(self->params->start_time),
+			self->rank);
 	self->last_meal = timestamp(0);
 	usleep(self->params->time_to_eat);
 	pthread_mutex_unlock(&(self->left_fork_mutex));

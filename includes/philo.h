@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:43:09 by romain            #+#    #+#             */
-/*   Updated: 2024/02/19 11:36:10 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/26 11:15:22 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-# include "ft_lst/ft_lst.h"
+# include "../ft_lst/ft_lst.h"
 # include <pthread.h>
 # include <stdio.h>
 # include <sys/time.h>
@@ -51,5 +51,5 @@ void				*routine_main(void *self);
 int					take_fork(t_philosopher *self, size_t id);
 long long			timestamp(long long start);
 void				ph_dead(t_philosopher *self);
-void				*routine_death(t_lst *table);
+void				routine_death(t_lst *table);
 #endif

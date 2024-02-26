@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/02/22 12:30:14 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/26 10:31:29 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	launch(t_lst **table)
 /// @param params rules defining the simulation
 void	start_sim(t_lst **table)
 {
-	t_lst		*cursor;
-	pthread_t	death;
+	t_lst	*cursor;
 
 	printf("sim starting at %lld\n", timestamp(0));
 	cursor = *table;
@@ -50,10 +49,9 @@ void	start_sim(t_lst **table)
 	}
 	pthread_create(&((t_philosopher *)(cursor->data))->thread, NULL,
 		&routine_main, cursor);
-	pthread_create(&death, NULL, &routine_death, *table);
 	launch(table);
-	cursor = (*table);
-	pthread_join(death, NULL);
+	cursor = *table;
+	routine_death(cursor);
 	while (cursor->next != *table)
 	{
 		pthread_join(((t_philosopher *)(cursor->data))->thread, NULL);

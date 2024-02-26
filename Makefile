@@ -3,41 +3,59 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: romain <romain@student.42.fr>              +#+  +:+       +#+         #
+#    By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 18:18:10 by romain            #+#    #+#              #
-#    Updated: 2024/01/05 18:46:16 by romain           ###   ########.fr        #
+#    Updated: 2024/02/26 11:15:47 by rdupeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS= $(wildcard *.c)
-OBJS= $(SRCS:.c=.o)
+SRC_FILES	=	death.c \
+				main.c \
+				routine.c \
+				utils.c \
+				utils2.c
+HEADER_FILES=	philo.h
+
+
+HEADER_DIR	=	includes
+OBJ_DIR		=	obj
+SRC_DIR		=	src
+
+SRC			= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+HEADERS		= $(addprefix $(HEADER_DIR)/, $(SRC_FILES))
 
 # Compiler, Linker Defines
 CFLAGS 	= -Wall -Wextra -Werror
 NAME	= philo
 LIBLST	= ft_lst/liblst.a
 DEBUG	= $(addsuffix _debug, $(NAME))
-
 # Link all Object Files with external Libraries into Binaries
-all: $(NAME) $(LIBLST)
+all: $(NAME)
 
 re: fclean all
 
-$(NAME): $(OBJS) $(LIBLST)
-	cc -pthread $(CFLAGS) $^ -o $(NAME)
+debug: $(DEBUG)
 
-debug: $(OBJS) $(LIBLST)
-	cc -pthread $(CFLAGS) $^ -o $(DEBUG) -g3
 
-$(LIBFT):
-	make -C libft
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -I$(HEADER_DIR)/ -c -o $@ $<
+
+$(NAME): $(OBJ) $(LIBLST)
+	cc -pthread $(CFLAGS) $^ -o $@
+
+$(DEBUG): $(OBJ) $(LIBLST)
+	cc -pthread $(CFLAGS) $^ -o $@ -g3
 
 $(LIBLST):
 	make -C ft_lst
 
+$(OBJ_DIR):
+	mkdir obj
+
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME) a.out core $(name) $(DEBUG)

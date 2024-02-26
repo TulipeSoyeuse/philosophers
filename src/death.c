@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   death.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:31:36 by romain            #+#    #+#             */
-/*   Updated: 2024/02/19 12:39:53 by romain           ###   ########.fr       */
+/*   Updated: 2024/02/26 11:13:25 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 int	sim_done(t_philosopher *philo)
 {
-	if (philo->params->nb_of_times_must_eat
-		&& philo->params->nb_of_times_must_eat <= (unsigned long)philo->eat_count)
-	{
-		printf("number of eating reach by %zu\n", philo->rank);
+	unsigned long	tms;
+
+	tms = philo->params->nb_of_times_must_eat;
+	if (tms && tms <= (unsigned long)philo->eat_count)
 		return (1);
-	}
 	if (!((long long)philo->params->time_to_die + philo->last_meal
 			- timestamp(0)) && philo->last_meal)
 	{
@@ -48,16 +47,20 @@ int	update_sim_status(t_lst *table)
 	return (0);
 }
 
-void	*routine_death(t_lst *table)
+void	routine_death(t_lst *table)
 {
 	t_philosopher	*philo;
+	int				status;
 
 	while (1)
-		if (update_sim_status(table))
+	{
+		status = update_sim_status(table);
+		if (status)
 		{
 			philo = table->data;
 			philo->params->sim_must_end = 1;
-			return (NULL);
+			return ;
 		}
-	return (NULL);
+	}
+	return ;
 }

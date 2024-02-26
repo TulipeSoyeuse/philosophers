@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/02/26 10:31:29 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/26 11:17:41 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	init_table(t_lst **table, t_params *params)
 	}
 	return (0);
 }
+
 void	ph_cleanup(void *data)
 {
 	t_philosopher	*ph;

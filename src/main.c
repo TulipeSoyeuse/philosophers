@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/02/28 14:31:29 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/28 15:54:13 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	main(int ac, char **av)
 	t_lst		*table;
 	t_params	params;
 
-	if (ac - 5 && ac - 6)
+	if ((ac - 5 && ac - 6) || check(ac, av))
 		return (1);
 	params.number_of_philosophers = ft_atoi(av[1]);
 	params.time_to_die = ft_atoi(av[2]);

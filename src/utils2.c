@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:41:57 by romain            #+#    #+#             */
-/*   Updated: 2024/02/28 14:41:58 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/28 15:55:41 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,26 @@ int	is_sim_must_end(t_lst *table)
 	code = params->sim_must_end;
 	pthread_mutex_unlock(&(params->sim_must_end_mutex));
 	return (code);
+}
+
+int	check(int ac, char **av)
+{
+	int		i;
+	char	*buf;
+
+	i = 1;
+	if (*(av[1]) == '0')
+		return (1);
+	while (i < ac)
+	{
+		buf = av[i];
+		while (*buf)
+		{
+			if (*buf < '0' || *buf > '9')
+				return (1);
+			buf++;
+		}
+		i++;
+	}
+	return (0);
 }

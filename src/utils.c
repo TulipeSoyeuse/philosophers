@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:17:08 by romain            #+#    #+#             */
-/*   Updated: 2024/02/26 10:22:42 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/28 14:47:54 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ int	ft_atoi(const char *str)
 int	take_fork(t_philosopher *self, size_t id)
 {
 	pthread_mutex_lock(&(self->left_fork_mutex));
+	pthread_mutex_lock(&(self->params->writer));
 	printf("%lld %zu as taken a fork from %zu\n",
 		timestamp(self->params->start_time), id, self->rank);
+	pthread_mutex_unlock(&(self->params->writer));
 	return (0);
 }

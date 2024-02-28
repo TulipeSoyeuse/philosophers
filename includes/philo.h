@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:43:09 by romain            #+#    #+#             */
-/*   Updated: 2024/02/28 15:48:39 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:32:56 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,5 @@ int					eat_enough(t_lst *table);
 void				print_eating(t_lst *table);
 int					is_sim_must_end(t_lst *table);
 int					check(int ac, char **av);
+void				time_to_think(t_params *params);
 #endif

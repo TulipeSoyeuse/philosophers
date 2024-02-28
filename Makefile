@@ -6,7 +6,7 @@
 #    By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 18:18:10 by romain            #+#    #+#              #
-#    Updated: 2024/02/28 11:00:47 by rdupeux          ###   ########.fr        #
+#    Updated: 2024/02/28 16:33:46 by rdupeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ SRC_FILES	=	death.c \
 				main.c \
 				routine.c \
 				utils.c \
-				utils2.c
+				utils2.c \
+				utils3.c
 HEADER_FILES=	philo.h
 
 

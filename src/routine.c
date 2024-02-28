@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 21:41:13 by romain            #+#    #+#             */
-/*   Updated: 2024/02/28 15:10:13 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:56:17 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	ph_sleep(t_lst *table)
 		pthread_mutex_unlock(&(self->params->writer));
 	}
 }
+
 void	ph_eat_pair(t_lst *table)
 {
 	t_philosopher	*self;
@@ -107,14 +108,13 @@ void	*routine_main(void *arg)
 		}
 		pthread_mutex_unlock(&(self->last_meal_mutex));
 	}
-	/* if (self->rank % 2)
-		usleep(self->params->time_to_eat / 2); */
 	while (!is_sim_must_end(table))
 	{
 		if (self->rank % 2)
 			ph_eat_pair(table);
 		else
 			ph_eat_unpair(table);
+		time_to_think(self->params);
 	}
 	return (NULL);
 }

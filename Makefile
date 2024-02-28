@@ -6,7 +6,7 @@
 #    By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 18:18:10 by romain            #+#    #+#              #
-#    Updated: 2024/02/26 11:15:47 by rdupeux          ###   ########.fr        #
+#    Updated: 2024/02/28 11:00:47 by rdupeux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ debug: $(DEBUG)
 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I$(HEADER_DIR)/ -c -o $@ $<
+	$(CC) $(CFLAGS) -g3 -I$(HEADER_DIR)/ -c -o $@ $<
 
 $(NAME): $(OBJ) $(LIBLST)
 	cc -pthread $(CFLAGS) $^ -o $@

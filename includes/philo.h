@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 20:43:09 by romain            #+#    #+#             */
-/*   Updated: 2024/02/26 12:11:29 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/28 13:23:27 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef enum e_status
 
 typedef struct s_params
 {
+	pthread_mutex_t	writer;
 	size_t			number_of_philosophers;
 	unsigned long	time_to_die;
 	unsigned long	time_to_eat;
@@ -40,7 +41,9 @@ typedef struct s_philosopher
 {
 	size_t			rank;
 	size_t			eat_count;
+	pthread_mutex_t	eat_count_mutex;
 	long long		last_meal;
+	pthread_mutex_t	last_meal_mutex;
 	t_params		*params;
 	t_status		status;
 	pthread_mutex_t	left_fork_mutex;
@@ -53,4 +56,7 @@ int					take_fork(t_philosopher *self, size_t id);
 long long			timestamp(long long start);
 void				ph_dead(t_philosopher *self);
 void				routine_death(t_lst *table);
+int					eat_enough(t_lst *table);
+void				print_eating(t_lst *table);
+int					is_sim_must_end(t_lst *table);
 #endif

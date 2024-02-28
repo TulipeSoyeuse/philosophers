@@ -6,7 +6,7 @@
 /*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 18:04:49 by romain            #+#    #+#             */
-/*   Updated: 2024/02/26 12:18:29 by rdupeux          ###   ########.fr       */
+/*   Updated: 2024/02/28 14:31:29 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void	launch(t_lst **table)
 	while (len--)
 	{
 		philo = cursor->data;
+		pthread_mutex_lock(&(philo->last_meal_mutex));
 		philo->last_meal = time;
+		pthread_mutex_unlock(&(philo->last_meal_mutex));
 		cursor = cursor->next;
 	}
 }
@@ -38,7 +40,6 @@ void	start_sim(t_lst **table)
 {
 	t_lst	*cursor;
 
-	printf("sim starting at %lld\n", timestamp(0));
 	cursor = *table;
 	((t_philosopher *)(cursor->data))->params->start_time = timestamp(0);
 	while (cursor->next != *table)
@@ -80,9 +81,11 @@ int	init_table(t_lst **table, t_params *params)
 		if (!new)
 			return (1);
 		pthread_mutex_init(&(philosopher->left_fork_mutex), NULL);
+		pthread_mutex_init(&(philosopher->last_meal_mutex), NULL);
+		if (params->nb_of_times_must_eat)
+			pthread_mutex_init(&(philosopher->eat_count_mutex), NULL);
 		append(table, new);
 	}
-	pthread_mutex_init(&(params->sim_must_end_mutex), NULL);
 	return (0);
 }
 
@@ -92,6 +95,9 @@ void	ph_cleanup(void *data)
 
 	ph = data;
 	pthread_mutex_destroy(&(ph->left_fork_mutex));
+	pthread_mutex_destroy(&(ph->last_meal_mutex));
+	if (ph->params->nb_of_times_must_eat)
+		pthread_mutex_destroy(&(ph->eat_count_mutex));
 	free(ph);
 }
 
@@ -108,6 +114,8 @@ int	main(int ac, char **av)
 	params.time_to_sleep = ft_atoi(av[4]) * 1000;
 	params.sim_must_end = 0;
 	params.start_time = 0;
+	pthread_mutex_init(&(params.writer), NULL);
+	pthread_mutex_init(&(params.sim_must_end_mutex), NULL);
 	if (ac == 6)
 		params.nb_of_times_must_eat = ft_atoi(av[5]);
 	else
@@ -117,4 +125,5 @@ int	main(int ac, char **av)
 		start_sim(&table);
 	free_lst(table, &ph_cleanup);
 	pthread_mutex_destroy(&(params.sim_must_end_mutex));
+	pthread_mutex_destroy(&(params.writer));
 }
